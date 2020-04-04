@@ -4,14 +4,19 @@
   "description": "TBD",
   "main": "no-tiff.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node test/test-all.js",
+    "serve": "node node_modules/xtal-test/serve.js",
+    "doc": "wca analyze no-tiff.js --outFile custom-elements.json"
   },
   "dependencies": {
     "notyf": "3.5.1",
     "trans-render": "0.0.143",
     "xtal-element": "0.0.101"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "es-module-shims": "0.4.6",
+    "xtal-test": "0.0.44"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/bahrus/no-tiff.git"
