@@ -6,6 +6,12 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "dependencies": {
+    "notyf": "3.5.1",
+    "trans-render": "0.0.143",
+    "xtal-element": "0.0.101"
+  },
+  "devDependencies": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/bahrus/no-tiff.git"
