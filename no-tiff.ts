@@ -10,21 +10,28 @@ export interface INotyfPosition {
     x: NotyfHorizontalPosition;
     y: NotyfVerticalPosition;
 }
-
-export interface INotyfNotificationOptions {
-    type?: string;
-    className?: string;
+export interface INotyfIcon {
+    className: string;
+    tagName: keyof ElementTagNameMap;
+    text: string;
+}
+export interface INotyfCommonOptions{
     duration?: number;
-    icon?: INotyfIcon | false;
-    background?: string;
-    message?: string;
     ripple?: boolean;
     position?: INotyfPosition;
     dismissible?: boolean;
 }
 
-export interface INotyfNotificationOptions{
+export interface INotyfNotificationOptions extends INotyfCommonOptions {
+    type?: string;
+    className?: string;
+    icon?: INotyfIcon | false;
+    background?: string;
+    message?: string;
+}
 
+export interface INotifyInitOptions extends INotyfCommonOptions{
+    types?: INotyfNotificationOptions[]
 }
 
 const duration = 'duration';
@@ -32,12 +39,16 @@ const ripple = 'ripple';
 const position = 'position';
 const dismissible = 'dismissible';
 const open = 'open';
-export class NoTiff extends XtallatX(hydrate(HTMLElement)) implements INotyfNotificationOptions{
+const types = 'types';
+const success = 'success';
+const error = 'error';
+
+export class NoTiff extends XtallatX(hydrate(HTMLElement)) implements INotifyInitOptions{
     static get is(){return 'no-tiff';}
     #notyf: Notyf;
     #conn = false;
     static get observedAttributes(){
-        return [duration, ripple, position, dismissible, open].concat(super.observedAttributes);
+        return [duration, ripple, position, dismissible, open, types, success, error].concat(super.observedAttributes);
     }
     attributeChangedCallback(n: string, ov: string, nv: string){
         switch(n){
@@ -50,10 +61,16 @@ export class NoTiff extends XtallatX(hydrate(HTMLElement)) implements INotyfNoti
                 break;
             case position:
             case open:
+            case types:
                 this[n] = JSON.parse(nv);
+                break;
+            case success:
+            case error:
+                this[n] = nv;
                 break;
             default:
                 super.attributeChangedCallback(n, ov, nv);
+                this.onPropsChange();
         }
     }
     #duration: number = 2000;
@@ -62,7 +79,6 @@ export class NoTiff extends XtallatX(hydrate(HTMLElement)) implements INotyfNoti
     }
     set duration(val){
         this.#duration = val;
-        this.onPropsChange();
     }
     #ripple: boolean = true;
     get ripple(){
@@ -70,7 +86,6 @@ export class NoTiff extends XtallatX(hydrate(HTMLElement)) implements INotyfNoti
     }
     set ripple(val){
         this.#ripple = val;
-        this.onPropsChange();
     }
     #dismissible: boolean = false;
     get dismissible(){
@@ -78,7 +93,6 @@ export class NoTiff extends XtallatX(hydrate(HTMLElement)) implements INotyfNoti
     }
     set dismissible(val){
         this.#dismissible = val;
-        this.onPropsChange();
     }
 
     #position: INotyfPosition = {x:'right',y:'bottom'};
@@ -87,7 +101,6 @@ export class NoTiff extends XtallatX(hydrate(HTMLElement)) implements INotyfNoti
     }
     set position(val){
         this.#position = val;
-        this.onPropsChange();
     }
 
     #open: INotyfNotificationOptions | undefined;
@@ -96,29 +109,70 @@ export class NoTiff extends XtallatX(hydrate(HTMLElement)) implements INotyfNoti
     }
     set open(val){
         this.#open = val;
-        if(this.#notyf !== undefined){
-            this.#notyf(val);
+        this.onPropsChange();
+    }
+
+    #success: string | undefined;
+    get success(){
+        return this.#success;
+    }
+    set success(val){
+        this.#success = val;
+        this.onPropsChange();
+    }
+
+    #error: string | undefined;
+    get error(){
+        return this.#error;
+    }
+    set error(val){
+        this.#error = val;
+        this.onPropsChange();
+    }
+
+    onPropsChange(){
+        if(this._disabled || !this.#conn || (!this.#open && !this.success && !this.error)) return;
+        if(this.#notyf === undefined){
+            this.#notyf = new Notyf({
+                duration: this.#duration,
+                ripple: this.#ripple,
+                position: this.#position,
+                dismissible: this.#dismissible
+            });
+        }
+        if(this.#open !== undefined){
+            this.#notyf.open(this.#open);
+            this.#open = undefined;
+        }
+        if(this.#success !== undefined){
+            this.#notyf.success(this.#success);
+            this.#success = undefined;
+        }
+        if(this.#error !== undefined){
+            this.#notyf.error(this.#error){
+                this.#error = undefined;
+            }
         }
     }
+
+
+
+    #types: INotyfNotificationOptions[] | undefined;
+    get types(){
+        return this.#types;
+    }
+    set types(val){
+        this.#types = val;
+    }
+
+
 
     connectedCallback(){
         this.#conn = true;
         this.style.display = 'none';
-        this.#notyf = new Notyf();
-        this.#notyf.success('Your changes have been successfully saved!');
+        this.propUp(NoTiff.observedAttributes);
+        this.onPropsChange();
     }
-    onPropsChange(){
-        if(this._disabled || !this.#conn) return;
-        this.#notyf = new Notyf({
-            duration: this.#duration,
-            ripple: this.#ripple,
-            position: this.#position,
-            dismissible: this.#dismissible
-        });
-        if(this.#open !== undefined){
-            this.#notyf(this.#open);
-            this.#open = undefined;
-        }
-    }
+
 }
 define(NoTiff);

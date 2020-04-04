@@ -1,17 +1,3 @@
-var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (receiver, privateMap) {
-    if (!privateMap.has(receiver)) {
-        throw new TypeError("attempted to get private field on non-instance");
-    }
-    return privateMap.get(receiver);
-};
-var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (receiver, privateMap, value) {
-    if (!privateMap.has(receiver)) {
-        throw new TypeError("attempted to set private field on non-instance");
-    }
-    privateMap.set(receiver, value);
-    return value;
-};
-var _notyf, _conn, _duration, _ripple, _dismissible, _position, _open;
 import { define } from 'trans-render/define.js';
 import { hydrate } from 'trans-render/hydrate.js';
 import { XtallatX } from 'xtal-element/xtal-latx.js';
@@ -21,20 +7,23 @@ const ripple = 'ripple';
 const position = 'position';
 const dismissible = 'dismissible';
 const open = 'open';
+const types = 'types';
+const success = 'success';
+const error = 'error';
 export class NoTiff extends XtallatX(hydrate(HTMLElement)) {
     constructor() {
         super(...arguments);
-        _notyf.set(this, void 0);
-        _conn.set(this, false);
-        _duration.set(this, 2000);
-        _ripple.set(this, true);
-        _dismissible.set(this, false);
-        _position.set(this, { x: 'right', y: 'bottom' });
-        _open.set(this, void 0);
+        this.#conn = false;
+        this.#duration = 2000;
+        this.#ripple = true;
+        this.#dismissible = false;
+        this.#position = { x: 'right', y: 'bottom' };
     }
     static get is() { return 'no-tiff'; }
+    #notyf;
+    #conn;
     static get observedAttributes() {
-        return [duration, ripple, position, dismissible, open].concat(super.observedAttributes);
+        return [duration, ripple, position, dismissible, open, types, success, error].concat(super.observedAttributes);
     }
     attributeChangedCallback(n, ov, nv) {
         switch (n) {
@@ -47,69 +36,108 @@ export class NoTiff extends XtallatX(hydrate(HTMLElement)) {
                 break;
             case position:
             case open:
+            case types:
                 this[n] = JSON.parse(nv);
+                break;
+            case success:
+            case error:
+                this[n] = nv;
                 break;
             default:
                 super.attributeChangedCallback(n, ov, nv);
+                this.onPropsChange();
         }
     }
+    #duration;
     get duration() {
-        return __classPrivateFieldGet(this, _duration);
+        return this.#duration;
     }
     set duration(val) {
-        __classPrivateFieldSet(this, _duration, val);
-        this.onPropsChange();
+        this.#duration = val;
     }
+    #ripple;
     get ripple() {
-        return __classPrivateFieldGet(this, _ripple);
+        return this.#ripple;
     }
     set ripple(val) {
-        __classPrivateFieldSet(this, _ripple, val);
-        this.onPropsChange();
+        this.#ripple = val;
     }
+    #dismissible;
     get dismissible() {
-        return __classPrivateFieldGet(this, _dismissible);
+        return this.#dismissible;
     }
     set dismissible(val) {
-        __classPrivateFieldSet(this, _dismissible, val);
-        this.onPropsChange();
+        this.#dismissible = val;
     }
+    #position;
     get position() {
-        return __classPrivateFieldGet(this, _position);
+        return this.#position;
     }
     set position(val) {
-        __classPrivateFieldSet(this, _position, val);
-        this.onPropsChange();
+        this.#position = val;
     }
+    #open;
     get open() {
-        return __classPrivateFieldGet(this, _open);
+        return this.#open;
     }
     set open(val) {
-        __classPrivateFieldSet(this, _open, val);
-        if (__classPrivateFieldGet(this, _notyf) !== undefined) {
-            __classPrivateFieldGet(this, _notyf).call(this, val);
-        }
+        this.#open = val;
+        this.onPropsChange();
     }
-    connectedCallback() {
-        __classPrivateFieldSet(this, _conn, true);
-        this.style.display = 'none';
-        __classPrivateFieldSet(this, _notyf, new Notyf());
-        __classPrivateFieldGet(this, _notyf).success('Your changes have been successfully saved!');
+    #success;
+    get success() {
+        return this.#success;
+    }
+    set success(val) {
+        this.#success = val;
+        this.onPropsChange();
+    }
+    #error;
+    get error() {
+        return this.#error;
+    }
+    set error(val) {
+        this.#error = val;
+        this.onPropsChange();
     }
     onPropsChange() {
-        if (this._disabled || !__classPrivateFieldGet(this, _conn))
+        if (this._disabled || !this.#conn || (!this.#open && !this.success && !this.error))
             return;
-        __classPrivateFieldSet(this, _notyf, new Notyf({
-            duration: __classPrivateFieldGet(this, _duration),
-            ripple: __classPrivateFieldGet(this, _ripple),
-            position: __classPrivateFieldGet(this, _position),
-            dismissible: __classPrivateFieldGet(this, _dismissible)
-        }));
-        if (__classPrivateFieldGet(this, _open) !== undefined) {
-            __classPrivateFieldGet(this, _notyf).call(this, __classPrivateFieldGet(this, _open));
-            __classPrivateFieldSet(this, _open, undefined);
+        if (this.#notyf === undefined) {
+            this.#notyf = new Notyf({
+                duration: this.#duration,
+                ripple: this.#ripple,
+                position: this.#position,
+                dismissible: this.#dismissible
+            });
+        }
+        if (this.#open !== undefined) {
+            this.#notyf.open(this.#open);
+            this.#open = undefined;
+        }
+        if (this.#success !== undefined) {
+            this.#notyf.success(this.#success);
+            this.#success = undefined;
+        }
+        if (this.#error !== undefined) {
+            this.#notyf.error(this.#error);
+            {
+                this.#error = undefined;
+            }
         }
     }
+    #types;
+    get types() {
+        return this.#types;
+    }
+    set types(val) {
+        this.#types = val;
+    }
+    connectedCallback() {
+        this.#conn = true;
+        this.style.display = 'none';
+        this.propUp(NoTiff.observedAttributes);
+        this.onPropsChange();
+    }
 }
-_notyf = new WeakMap(), _conn = new WeakMap(), _duration = new WeakMap(), _ripple = new WeakMap(), _dismissible = new WeakMap(), _position = new WeakMap(), _open = new WeakMap();
 define(NoTiff);
