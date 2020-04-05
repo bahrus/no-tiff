@@ -1,3 +1,17 @@
+var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (receiver, privateMap) {
+    if (!privateMap.has(receiver)) {
+        throw new TypeError("attempted to get private field on non-instance");
+    }
+    return privateMap.get(receiver);
+};
+var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (receiver, privateMap, value) {
+    if (!privateMap.has(receiver)) {
+        throw new TypeError("attempted to set private field on non-instance");
+    }
+    privateMap.set(receiver, value);
+    return value;
+};
+var _notyf, _conn, _duration, _ripple, _dismissible, _position, _open, _success, _error, _types;
 import { define } from 'trans-render/define.js';
 import { hydrate } from 'trans-render/hydrate.js';
 import { XtallatX } from 'xtal-element/xtal-latx.js';
@@ -16,15 +30,18 @@ const error = 'error';
 export class NoTiff extends XtallatX(hydrate(HTMLElement)) {
     constructor() {
         super(...arguments);
-        this.#conn = false;
-        this.#duration = 2000;
-        this.#ripple = true;
-        this.#dismissible = false;
-        this.#position = { x: 'right', y: 'bottom' };
+        _notyf.set(this, void 0);
+        _conn.set(this, false);
+        _duration.set(this, 2000);
+        _ripple.set(this, true);
+        _dismissible.set(this, false);
+        _position.set(this, { x: 'right', y: 'bottom' });
+        _open.set(this, void 0);
+        _success.set(this, void 0);
+        _error.set(this, void 0);
+        _types.set(this, void 0);
     }
     static get is() { return 'no-tiff'; }
-    #notyf;
-    #conn;
     static get observedAttributes() {
         return [duration, ripple, position, dismissible, open, types, success, error].concat(super.observedAttributes);
     }
@@ -51,9 +68,8 @@ export class NoTiff extends XtallatX(hydrate(HTMLElement)) {
                 this.onPropsChange();
         }
     }
-    #duration;
     get duration() {
-        return this.#duration;
+        return __classPrivateFieldGet(this, _duration);
     }
     /**
      * Number of miliseconds before hiding the notification
@@ -61,11 +77,10 @@ export class NoTiff extends XtallatX(hydrate(HTMLElement)) {
      * @attr
      */
     set duration(val) {
-        this.#duration = val;
+        __classPrivateFieldSet(this, _duration, val);
     }
-    #ripple;
     get ripple() {
-        return this.#ripple;
+        return __classPrivateFieldGet(this, _ripple);
     }
     /**
      * Whether to show the notification with a ripple effect
@@ -73,18 +88,16 @@ export class NoTiff extends XtallatX(hydrate(HTMLElement)) {
      * @attr
      */
     set ripple(val) {
-        this.#ripple = val;
+        __classPrivateFieldSet(this, _ripple, val);
     }
-    #dismissible;
     get dismissible() {
-        return this.#dismissible;
+        return __classPrivateFieldGet(this, _dismissible);
     }
     set dismissible(val) {
-        this.#dismissible = val;
+        __classPrivateFieldSet(this, _dismissible, val);
     }
-    #position;
     get position() {
-        return this.#position;
+        return __classPrivateFieldGet(this, _position);
     }
     /**
      * Viewport location where notifications are rendered
@@ -92,82 +105,79 @@ export class NoTiff extends XtallatX(hydrate(HTMLElement)) {
      * @attr
      */
     set position(val) {
-        this.#position = val;
+        __classPrivateFieldSet(this, _position, val);
     }
-    #open;
     get open() {
-        return this.#open;
+        return __classPrivateFieldGet(this, _open);
     }
     /**
      * Customizable toast
      */
     set open(val) {
-        this.#open = val;
+        __classPrivateFieldSet(this, _open, val);
         this.onPropsChange();
     }
-    #success;
     get success() {
-        return this.#success;
+        return __classPrivateFieldGet(this, _success);
     }
     /**
      * Success message
      */
     set success(val) {
-        this.#success = val;
+        __classPrivateFieldSet(this, _success, val);
         this.onPropsChange();
     }
-    #error;
     /**
      * Error message
      */
     get error() {
-        return this.#error;
+        return __classPrivateFieldGet(this, _error);
     }
     set error(val) {
-        this.#error = val;
+        __classPrivateFieldSet(this, _error, val);
         this.onPropsChange();
     }
     onPropsChange() {
-        if (this._disabled || !this.#conn || (!this.#open && !this.success && !this.error))
+        if (this._disabled || !__classPrivateFieldGet(this, _conn) || (!__classPrivateFieldGet(this, _open) && !this.success && !this.error))
             return;
-        if (this.#notyf === undefined) {
-            this.#notyf = new Notyf({
-                duration: this.#duration,
-                ripple: this.#ripple,
-                position: this.#position,
-                dismissible: this.#dismissible
-            });
+        if (__classPrivateFieldGet(this, _notyf) === undefined) {
+            __classPrivateFieldSet(this, _notyf, new Notyf({
+                duration: __classPrivateFieldGet(this, _duration),
+                ripple: __classPrivateFieldGet(this, _ripple),
+                position: __classPrivateFieldGet(this, _position),
+                dismissible: __classPrivateFieldGet(this, _dismissible)
+            }));
         }
-        if (this.#open !== undefined) {
-            this.#notyf.open(this.#open);
-            this.#open = undefined;
+        if (__classPrivateFieldGet(this, _open) !== undefined) {
+            __classPrivateFieldGet(this, _notyf).open(__classPrivateFieldGet(this, _open));
+            __classPrivateFieldSet(this, _open, undefined);
         }
-        if (this.#success !== undefined) {
-            this.#notyf.success(this.#success);
-            this.#success = undefined;
+        if (__classPrivateFieldGet(this, _success) !== undefined) {
+            __classPrivateFieldGet(this, _notyf).success(__classPrivateFieldGet(this, _success));
+            __classPrivateFieldSet(this, _success, undefined);
         }
-        if (this.#error !== undefined) {
-            this.#notyf.error(this.#error);
+        if (__classPrivateFieldGet(this, _error) !== undefined) {
+            __classPrivateFieldGet(this, _notyf).error(__classPrivateFieldGet(this, _error));
             {
-                this.#error = undefined;
+                __classPrivateFieldSet(this, _error, undefined);
             }
         }
     }
-    #types;
     get types() {
-        return this.#types;
+        return __classPrivateFieldGet(this, _types);
     }
     /**
      * Array with individual configurations for each type of toast
      */
     set types(val) {
-        this.#types = val;
+        __classPrivateFieldSet(this, _types, val);
     }
     connectedCallback() {
-        this.#conn = true;
+        __classPrivateFieldSet(this, _conn, true);
         this.style.display = 'none';
         this.propUp(NoTiff.observedAttributes);
         this.onPropsChange();
     }
 }
+_notyf = new WeakMap(), _conn = new WeakMap(), _duration = new WeakMap(), _ripple = new WeakMap(), _dismissible = new WeakMap(), _position = new WeakMap(), _open = new WeakMap(), _success = new WeakMap(), _error = new WeakMap(), _types = new WeakMap();
 define(NoTiff);
