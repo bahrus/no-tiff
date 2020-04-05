@@ -1,6 +1,6 @@
 {
   "name": "no-tiff",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Web Component wrapper around notyf toast notification library.",
   "main": "no-tiff.js",
   "module": "no-tiff.js",
