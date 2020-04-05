@@ -1,0 +1,81 @@
+{
+  "version": "experimental",
+  "tags": [
+    {
+      "name": "no-tiff",
+      "attributes": [
+        {
+          "name": "duration",
+          "description": "Number of miliseconds before hiding the notification\nDefault:  2000"
+        },
+        {
+          "name": "ripple",
+          "description": "Whether to show the notification with a ripple effect\nDefault:  true"
+        },
+        {
+          "name": "position",
+          "description": "Viewport location where notifications are rendered\nDefault:  {x:'right',y:'bottom'}"
+        },
+        {
+          "name": "disabled",
+          "description": "Any component that emits events should not do so if it is disabled.\r\nNote that this is not enforced, but the disabled property is made available.\r\nUsers of this mix-in should ensure not to call \"de\" if this property is set to true.",
+          "type": "boolean"
+        }
+      ],
+      "properties": [
+        {
+          "name": "notyf"
+        },
+        {
+          "name": "conn"
+        },
+        {
+          "name": "duration",
+          "attribute": "duration",
+          "description": "Number of miliseconds before hiding the notification\nDefault:  2000"
+        },
+        {
+          "name": "ripple",
+          "attribute": "ripple",
+          "description": "Whether to show the notification with a ripple effect\nDefault:  true"
+        },
+        {
+          "name": "dismissible"
+        },
+        {
+          "name": "position",
+          "attribute": "position",
+          "description": "Viewport location where notifications are rendered\nDefault:  {x:'right',y:'bottom'}"
+        },
+        {
+          "name": "open",
+          "description": "Customizable toast"
+        },
+        {
+          "name": "success",
+          "description": "Success message"
+        },
+        {
+          "name": "error",
+          "description": "Error message"
+        },
+        {
+          "name": "types",
+          "description": "Array with individual configurations for each type of toast"
+        },
+        {
+          "name": "evCount",
+          "description": "Tracks how many times each event type was called.",
+          "type": "{ [key: string]: number; }",
+          "default": "{}"
+        },
+        {
+          "name": "disabled",
+          "attribute": "disabled",
+          "description": "Any component that emits events should not do so if it is disabled.\r\nNote that this is not enforced, but the disabled property is made available.\r\nUsers of this mix-in should ensure not to call \"de\" if this property is set to true.",
+          "type": "boolean"
+        }
+      ]
+    }
+  ]
+}

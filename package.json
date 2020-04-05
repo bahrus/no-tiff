@@ -1,8 +1,9 @@
 {
   "name": "no-tiff",
   "version": "0.0.0",
-  "description": "TBD",
+  "description": "Web Component wrapper around notyf toast notification library.",
   "main": "no-tiff.js",
+  "module": "no-tiff.js",
   "scripts": {
     "test": "node test/test-all.js",
     "serve": "node node_modules/xtal-test/serve.js",

@@ -43,6 +43,9 @@ const types = 'types';
 const success = 'success';
 const error = 'error';
 
+/**
+ * @element no-tiff
+ */
 export class NoTiff extends XtallatX(hydrate(HTMLElement)) implements INotifyInitOptions{
     static get is(){return 'no-tiff';}
     #notyf: Notyf;
@@ -77,6 +80,11 @@ export class NoTiff extends XtallatX(hydrate(HTMLElement)) implements INotifyIni
     get duration(){
         return this.#duration;
     }
+    /**
+     * Number of miliseconds before hiding the notification
+     * Default:  2000
+     * @attr
+     */
     set duration(val){
         this.#duration = val;
     }
@@ -84,6 +92,11 @@ export class NoTiff extends XtallatX(hydrate(HTMLElement)) implements INotifyIni
     get ripple(){
         return this.#ripple;
     }
+    /**
+     * Whether to show the notification with a ripple effect
+     * Default:  true
+     * @attr
+     */
     set ripple(val){
         this.#ripple = val;
     }
@@ -99,6 +112,11 @@ export class NoTiff extends XtallatX(hydrate(HTMLElement)) implements INotifyIni
     get position(){
         return this.#position;
     }
+    /**
+     * Viewport location where notifications are rendered
+     * Default:  {x:'right',y:'bottom'}
+     * @attr
+     */
     set position(val){
         this.#position = val;
     }
@@ -107,6 +125,9 @@ export class NoTiff extends XtallatX(hydrate(HTMLElement)) implements INotifyIni
     get open(){
         return this.#open;
     }
+    /**
+     * Customizable toast
+     */
     set open(val){
         this.#open = val;
         this.onPropsChange();
@@ -116,12 +137,18 @@ export class NoTiff extends XtallatX(hydrate(HTMLElement)) implements INotifyIni
     get success(){
         return this.#success;
     }
+    /**
+     * Success message
+     */
     set success(val){
         this.#success = val;
         this.onPropsChange();
     }
 
     #error: string | undefined;
+    /**
+     * Error message
+     */
     get error(){
         return this.#error;
     }
@@ -161,6 +188,9 @@ export class NoTiff extends XtallatX(hydrate(HTMLElement)) implements INotifyIni
     get types(){
         return this.#types;
     }
+    /**
+     * Array with individual configurations for each type of toast
+     */
     set types(val){
         this.#types = val;
     }
@@ -176,3 +206,8 @@ export class NoTiff extends XtallatX(hydrate(HTMLElement)) implements INotifyIni
 
 }
 define(NoTiff);
+declare global {
+    interface HTMLElementTagNameMap {
+        "no-tiff": NoTiff,
+    }
+}
